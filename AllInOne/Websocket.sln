@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebsocketProtocol", "Websocket Server\WebsocketProtocol\WebsocketProtocol.vcproj", "{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D208CCA6-2919-4B12-BF98-113AFB5B72C1} = {D208CCA6-2919-4B12-BF98-113AFB5B72C1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PushFramework", "PushFramework\PushFramework.vcproj", "{D208CCA6-2919-4B12-BF98-113AFB5B72C1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebsocketServer", "Websocket Server\WebsocketServer\WebsocketServer.vcproj", "{F850AE7E-F01D-404E-BA7F-E560FB992791}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Debug|Win32.Build.0 = Debug|Win32
+		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Release|Win32.ActiveCfg = Release|Win32
+		{D2B270FE-F5AD-47EB-80CD-4F464122EC9A}.Release|Win32.Build.0 = Release|Win32
+		{D208CCA6-2919-4B12-BF98-113AFB5B72C1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D208CCA6-2919-4B12-BF98-113AFB5B72C1}.Debug|Win32.Build.0 = Debug|Win32
+		{D208CCA6-2919-4B12-BF98-113AFB5B72C1}.Release|Win32.ActiveCfg = Release|Win32
+		{D208CCA6-2919-4B12-BF98-113AFB5B72C1}.Release|Win32.Build.0 = Release|Win32
+		{F850AE7E-F01D-404E-BA7F-E560FB992791}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F850AE7E-F01D-404E-BA7F-E560FB992791}.Debug|Win32.Build.0 = Debug|Win32
+		{F850AE7E-F01D-404E-BA7F-E560FB992791}.Release|Win32.ActiveCfg = Release|Win32
+		{F850AE7E-F01D-404E-BA7F-E560FB992791}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
