@@ -1,0 +1,181 @@
+<!-- $Id: example.html,v 1.4 2006/03/27 02:44:36 pat Exp $ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Websocket Client</title>
+
+<link type="text/css" href="websocket_client.css" rel="stylesheet" />	
+<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+var socket;
+
+$('#connect').click(function(){
+			var text = $('#pseudo').val();
+				if(text==""){
+					alert("Please input a pseudonym !");
+					return ;	
+				}
+			 connect();
+			});
+$('#echo_send').click(function(){
+			var msg = $('#echo_msg').val();
+				if( msg == ""){
+					alert("Please a message !");
+					return ;	
+				}			 
+			 socket.send('1' + msg);
+			});
+$('#routed_send').click(function(){
+			var recipient = $('#routed_recipient').val();
+			var msg = $('#routed_msg').val();
+				if(recipient=="" || msg == ""){
+					alert("Please input a recipient and a message !");
+					return ;	
+				}			 
+			 socket.send('2' + recipient + '|' + msg);
+			});
+$('#group_subscribe').click(function(){		 
+			 socket.send('3subscribe');
+			});
+$('#group_unsubscribe').click(function(){		 
+			 socket.send('3unsubscribe');
+			});			
+$('#group_send').click(function(){
+			var msg = $('#group_msg').val();
+				if(msg == ""){
+					alert("Please input a broadcast message !");
+					return ;	
+				}			 
+			 socket.send('3publish|' + msg);
+			});			
+$('#stream_subscribe').click(function(){		 
+			 socket.send('4subscribe');
+			});
+$('#stream_unsubscribe').click(function(){		 
+			 socket.send('4unsubscribe');
+			});				
+			
+function OutputLog(msg){
+				var content = '<p>' + msg + '</p>';
+				$('#consolebox').append(content);
+			};
+		
+function connect(){
+
+			var host = "ws://localhost:81/test";
+			
+			try{
+				socket = new WebSocket(host);
+				OutputLog('Socket Status: '+socket.readyState);
+				socket.onopen = function(){
+					OutputLog('Socket Status: '+socket.readyState+' (open)');
+					var pseudoName = $('#pseudo').val();
+					socket.send('0'+pseudoName);
+				}
+				
+				socket.onmessage = function(msg){
+					var str = "";
+					str = msg.data;
+					var id  = str.substr(0, 1);
+					var separator = str.indexOf("|");
+					var arg1 = "";
+					var arg2 = "";
+					if(separator != -1)
+					{
+						arg1 = str.substr(1, separator-1);
+						arg2 = str.substr(separator+1);
+					}
+					else
+						arg1 = str.substr(1);				
+					
+					if(id == "0"){
+						OutputLog('Server reply : '+arg1);	
+					}
+					if(id == "1"){
+						OutputLog('Server echo msg : '+arg1);	
+					}
+					if(id == "2"){
+						OutputLog(arg1 + ' said : ' + arg2);	 						
+					}
+					if(id == "3"){
+						OutputLog(arg1 + ' broadcasted : ' + arg2);	 						
+					}
+					if(id == "4"){
+						OutputLog('Server streamed : '+arg1);	
+					}
+														
+				}
+				
+				socket.onclose = function(){
+					OutputLog('Socket Status: '+socket.readyState+' (Closed)');
+				}			
+					
+			} catch(exception){
+				OutputLog('Error'+exception);
+			}
+			
+		}
+});
+			
+</script>
+
+</head>
+<body>
+
+<h1>Websocket client :</h1>
+
+Pseudo : <input id="pseudo" type="text" /><button id="connect">Connect</button><br/>
+
+<script>
+	$(function() {
+		$( "#tabs" ).tabs();
+	});
+</script>
+
+
+
+<div class="demo">
+
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">Echo</a></li>
+		<li><a href="#tabs-2">Routed</a></li>
+		<li><a href="#tabs-3">Group</a></li>
+		<li><a href="#tabs-4">Streamed</a></li>
+	</ul>
+	<div id="tabs-1">
+		Message : <input id="echo_msg" type="text" /><button id="echo_send">Send</button><br/>
+	</div>
+	<div id="tabs-2">
+		Destination : <input id="routed_recipient" type="text" />
+		Message : <input id="routed_msg" type="text" /><button id="routed_send">Send</button><br/>
+	</div>
+	<div id="tabs-3">
+		<button id="group_subscribe">Subscribe</button><button id="group_unsubscribe">Unsubscribe</button><br/>
+		Message : <input id="group_msg" type="text" /><button id="group_send">Send</button>
+	</div>
+	<div id="tabs-4">
+		<button id="stream_subscribe">Subscribe</button><button id="stream_unsubscribe">Unsubscribe</button><br/>
+	</div>
+</div>
+<div id="consolebox">
+
+
+</div>
+</div><!-- End demo -->
+
+
+
+<div class="demo-description" style="display: none; ">
+<p>Click tabs to swap between content that is broken into logical sections.</p>
+</div><!-- End demo-description -->
+
+</body>
+</html>
